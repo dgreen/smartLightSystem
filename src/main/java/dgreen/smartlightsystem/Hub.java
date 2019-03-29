@@ -9,6 +9,8 @@
 package dgreen.smartlightsystem;
 
 import dgreen.logging.Logger;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  *
@@ -17,9 +19,10 @@ import dgreen.logging.Logger;
 public class Hub {
 
     private Logger logger;
-    private Devices knownDevices;      // hubs knowledge of known devices
-    private Devices pool;               // device pool in environment
-    
+    private Devices knownDevices;             // hubs knowledge of known devices
+    private Devices pool;                     // device pool in environment
+    //               name   uid
+    private HashMap<String,String> namesToUID; // map names to UIDs
     
     /**
      * Create a hub
@@ -39,6 +42,7 @@ public class Hub {
             this.logger = logger;
         }
         knownDevices = new Devices();
+        namesToUID = new HashMap<>();
     }
     
     /**
@@ -48,29 +52,48 @@ public class Hub {
      * @param uid
      * @param name 
      */
-    public void addDevice(long uid, String name) {
+    public void addDevice(String uid, String name) {
+        Device foundDevice;
+        Device hubCopyDevice;
         
+        if ( knownDevices.findDevice(uid) != null ) {
+            // handle error -- device already known
+            return;
+        }
+            
+        
+        if ( (foundDevice = pool.findDevice(uid)) != null ) {
+            // add device and associate with name
+            hubCopyDevice = foundDevice.mirror();
+
+            knownDevices.add(hubCopyDevice);
+            namesToUID.put(name, uid);            
+        } else {
+            // TBD handle device not found error
+        }
     }
     
-    public Devices getKnownDevices() {
-        return null;
+    public Devices getKnownDevices() { 
+        return knownDevices;
     }
     
-    public Device getDevice(long uid) {
-        return null;
+    public Device getDeviceByUID(String uid) {
+        return knownDevices.findDevice(uid);
     }
     
-    public Device getDevice(String name) {
-        return null;
+    public Device getDeviceByName(String name) {
+        String uid = namesToUID.get(name);
+        
+        return getDeviceByUID(uid);
     }
     
     public void setDevice(String name, Property property) {
-        
+        getDeviceByName(name).set(property);
+        pool.findDevice(namesToUID.get(name)).set(property);
     }
     
     public DeviceProperties getDeviceProperties(String name) {
-        return null;
+        return getDeviceByName(name).getProperties();
     }
-    
     
 }

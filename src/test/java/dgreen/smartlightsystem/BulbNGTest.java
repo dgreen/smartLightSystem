@@ -23,8 +23,8 @@ public class BulbNGTest {
 
     @BeforeMethod
     public void setUpMethod() throws Exception {
-        b1 = new Bulb(null);
-        b2 = new Bulb(null);
+        b1 = new Bulb("100", null);
+        b2 = new Bulb("101", null);
     }
 
     @AfterMethod

@@ -9,6 +9,7 @@
 package dgreen.smartlightsystem;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * A collection of device properties
@@ -51,5 +52,9 @@ public class DeviceProperties {
     public boolean isLocked() {
         return locked;
     }
-
+    
+    public Set<String> getPropertyNames() {
+        return propertiesMap.keySet();
+    }
+    
 }

@@ -17,10 +17,10 @@ import org.testng.annotations.Test;
  */
 public class HubNGTest {
     
-    Hub hub;
-    Bulb b1;
-    Bulb b2;
-    Devices pool;
+    private Hub     hub;
+    private Bulb    b1;
+    private Bulb    b2;
+    private Devices pool;
 
     @BeforeMethod
     public void setUpMethod() throws Exception {
@@ -43,21 +43,28 @@ public class HubNGTest {
     @Test
     public void testAddDevice() {
         assertEquals(hub.getKnownDevices().size(), 0);
-        
-        hub.addDevice("100", "Bulb1");
+        try {
+            hub.addDevice("100", "Bulb1");
 
-        // should 1 device, with same values but not be same device
-        assertEquals(hub.getKnownDevices().size(), 1);
-        assertTrue(b1.equals(hub.getKnownDevices().findDevice("100")));
-        assertTrue(hub.getKnownDevices().findDevice("100") != b1);
-        
-        hub.addDevice("101", "Bulb2");
-        assertEquals(hub.getKnownDevices().size(), 2);
-        assertTrue(b2.equals(hub.getKnownDevices().findDevice("101")));
-        assertTrue(hub.getKnownDevices().findDevice("101") != b2);
-        
-        hub.addDevice("101", "NewName");
-        assertEquals(hub.getKnownDevices().size(), 2);
+            // should 1 device, with same values but not be same device
+            assertEquals(hub.getKnownDevices().size(), 1);
+            assertTrue(b1.equals(hub.getKnownDevices().findDevice("100")));
+            assertTrue(hub.getKnownDevices().findDevice("100") != b1);
+
+            hub.addDevice("101", "Bulb2");
+            assertEquals(hub.getKnownDevices().size(), 2);
+            assertTrue(b2.equals(hub.getKnownDevices().findDevice("101")));
+            assertTrue(hub.getKnownDevices().findDevice("101") != b2);
+            try {
+                hub.addDevice("101", "NewName");
+                fail("Did not throw Excption for additional add");
+            } catch(DeviceAlreadyRegisteredException e) {
+                // this should happend, proceed
+            }
+            assertEquals(hub.getKnownDevices().size(), 2);
+        } catch(Exception e) {
+            fail("Exception thrown");
+        }
     }
 
     /**
@@ -65,15 +72,19 @@ public class HubNGTest {
      */
     @Test
     public void testGetDeviceByUID() {
-        hub.addDevice("100", "Bulb1");
-        hub.addDevice("101", "Bulb2");
-        
-        assertEquals(hub.getKnownDevices().size(), 2);
-        Device d = hub.getDeviceByUID("101");
-        
-        // should be the copy not original
-        assertEquals(d, b2);
-        assertTrue(d != b2);
+        try {
+            hub.addDevice("100", "Bulb1");
+            hub.addDevice("101", "Bulb2");
+
+            assertEquals(hub.getKnownDevices().size(), 2);
+            Device d = hub.getDeviceByUID("101");
+
+            // should be the copy not original
+            assertEquals(d, b2);
+            assertTrue(d != b2);
+        } catch(Exception e) {
+            fail("Exception thrown");
+        }
     }
 
     /**
@@ -81,21 +92,34 @@ public class HubNGTest {
      */
     @Test
     public void testGetDeviceByName() {
-        hub.addDevice("100", "Bulb1");
-        hub.addDevice("101", "Bulb2");
-        
-        assertEquals(hub.getKnownDevices().size(), 2);
-        Device d = hub.getDeviceByName("Bulb1");
-        
-        // should be the copy not original
-        assertEquals(d, b1);
-        assertTrue(d != b1);
-        
-        hub.addDevice("101", "NewName");
-        
-        assertEquals(hub.getDeviceByName("Bulb2"), b2);
-        hub.getDeviceByName("NewName");
-        assertEquals(hub.getDeviceByName("NewName"), null);
+        try {
+            hub.addDevice("100", "Bulb1");
+            hub.addDevice("101", "Bulb2");
+
+            assertEquals(hub.getKnownDevices().size(), 2);
+            Device d = hub.getDeviceByName("Bulb1");
+
+            // should be the copy not original
+            assertEquals(d, b1);
+            assertTrue(d != b1);
+
+            try {
+                hub.addDevice("101", "NewName");
+                fail("Did not throw device already registered exception");
+            } catch(DeviceAlreadyRegisteredException e) {
+                // should happen
+            }
+
+            assertEquals(hub.getDeviceByName("Bulb2"), b2);
+            try {
+                hub.getDeviceByName("NewName");
+                fail("Should throw NoSuchDeviceNameException");
+            } catch(NoSuchDeviceNameException e) {
+                // should happen
+            }
+        } catch(Exception e) {
+            fail("Exception thrown");
+        }
     }
 
     /**
@@ -103,18 +127,22 @@ public class HubNGTest {
      */
     @Test
     public void testSetDevice() {
-        hub.addDevice("100", "Bulb1");
-        hub.addDevice("101", "Bulb2");
+        try {
+            hub.addDevice("100", "Bulb1");
+            hub.addDevice("101", "Bulb2");
 
-        hub.setDevice("Bulb1", new Property("Status", "On"));
-        
-        // check local copy
-        assertEquals(hub.getKnownDevices().findDevice("100").getProperties().getProperty("Status").getValue(),
-                     "On");
-        // check local copy using getDeviceProperties method
-        assertEquals(hub.getDeviceProperties("Bulb1").getProperty("Status").getValue(), "On");
-        
-        // check actual bulb
-        assertEquals(b1.getProperties().getProperty("Status").getValue(), "On");
+            hub.setDevice("Bulb1", new Property("Status", "On"));
+
+            // check local copy
+            assertEquals(hub.getKnownDevices().findDevice("100").getProperties().getProperty("Status").getValue(),
+                         "On");
+            // check local copy using getDeviceProperties method
+            assertEquals(hub.getDeviceProperties("Bulb1").getProperty("Status").getValue(), "On");
+
+            // check actual bulb
+            assertEquals(b1.getProperties().getProperty("Status").getValue(), "On");
+        } catch(Exception e) {
+            fail("Exception thrown");
+        }
     }
 }

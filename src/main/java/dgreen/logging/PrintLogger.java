@@ -7,15 +7,22 @@
 package dgreen.logging;
 
 /**
- *
+ * Log to standard out
  * @author David G. Green dgreen@uab.edu
  */
 public class PrintLogger extends Logger {
     
+    /**
+     * Create a print logger
+     */
     public PrintLogger() {
         super();
     }
     
+    /**
+     * Write message s to stdout
+     * @param s message
+     */
     @Override
     public void write(String s) {
         System.out.println(s);

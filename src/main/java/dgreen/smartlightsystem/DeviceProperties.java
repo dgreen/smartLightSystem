@@ -20,10 +20,18 @@ public class DeviceProperties {
     HashMap<String, Property> propertiesMap;
     private boolean locked;
     
+    /**
+     * Create the device properties object
+     */
     public DeviceProperties() {
         propertiesMap = new HashMap<>();
     }
     
+    /**
+     * get a Property with name aName from the collection
+     * @param aName the name of the property desired
+     * @return Property associated with aName
+     */
     public Property getProperty(String aName) {
         return propertiesMap.get(aName);
     }
@@ -40,6 +48,10 @@ public class DeviceProperties {
         propertiesMap.put(p.getName(), p);
     }
     
+    /**
+     * Lock the device properties object to not allow any new properties (although
+     * one can change value of existing named property.
+     */
     public void lock() {
         locked = true;
     }
@@ -53,6 +65,10 @@ public class DeviceProperties {
         return locked;
     }
     
+    /**
+     * Get all of the property names in the collection as a set
+     * @return set of strings containing all names
+     */
     public Set<String> getPropertyNames() {
         return propertiesMap.keySet();
     }

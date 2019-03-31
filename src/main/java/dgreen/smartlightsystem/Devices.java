@@ -17,10 +17,18 @@ public class Devices {
     //              uid     device
     private HashMap<String, Device> devices;
     
+    /**
+     * Create a collection to hold devices (initially empty)
+     */
     public Devices() {
         devices = new HashMap<>();
     }
     
+    /**
+     * Add a device to the collection.  The uid property of the object will be used
+     * as a key and trying a second device with the same key will silently ignored (presently)
+     * @param device device object to add to the collection
+     */
     public void add(Device device) {
         if (! devices.containsKey(device.getUid()) ) {
             devices.put(device.getUid(), device);
@@ -29,10 +37,19 @@ public class Devices {
         }
     }
     
+    /**
+     * Find a device in collection by looking for its uid
+     * @param uid string to use a uid when looking for a particular device
+     * @return device found or null if no device
+     */
     public Device findDevice(String uid) {
         return devices.get(uid);
     }
     
+    /**
+     * Return number of devices in collection
+     * @return number of devices
+     */
     public int size() {
         return devices.size();
     }

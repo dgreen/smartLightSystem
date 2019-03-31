@@ -46,21 +46,22 @@ public class Hub {
     }
     
     /**
-     * Add a device to the hub.  The pool will be searched for a device with the uid
+     * Add a device to the hub.The pool will be searched for a device with the uid
      * and if so, a clone of that device will be placed in the knownDevices with the
      * given name (and uid)
-     * @param uid
-     * @param name 
+     * @param uid uid of the device we think is findable in pool
+     * @param name name we want to assign to the device
+     * @throws dgreen.smartlightsystem.SmartSystemException (actually subclasses)
+     * 
+     * Including DeviceAlreadyRegisteredException, DeviceNotFoundException
      */
-    public void addDevice(String uid, String name) {
+    public void addDevice(String uid, String name) throws SmartSystemException {
         Device foundDevice;
         Device hubCopyDevice;
         
         if ( knownDevices.findDevice(uid) != null ) {
-            // handle error -- device already known
-            return;
-        }
-            
+            throw new DeviceAlreadyRegisteredException(name);
+        }            
         
         if ( (foundDevice = pool.findDevice(uid)) != null ) {
             // add device and associate with name
@@ -69,31 +70,75 @@ public class Hub {
             knownDevices.add(hubCopyDevice);
             namesToUID.put(name, uid);            
         } else {
-            // TBD handle device not found error
+            throw new DeviceNotFoundException(uid);
         }
     }
     
+    /**
+     * Supply all of the known devices (registered with hub)
+     * @return a collection of devices
+     */
     public Devices getKnownDevices() { 
         return knownDevices;
     }
     
-    public Device getDeviceByUID(String uid) {
+    /**
+     * Get a device given a UID in known devices
+     * @param uid uid of known device
+     * @return Device
+     * @throws SmartSystemException
+     */
+    public Device getDeviceByUID(String uid) throws SmartSystemException {
         return knownDevices.findDevice(uid);
     }
     
-    public Device getDeviceByName(String name) {
+    /**
+     * Get a device given its assigned name
+     * @param name assigned name of device
+     * @return Device with name
+     * @throws SmartSystemException
+     * 
+     * Exceptions include NoSuchDeviceNameException
+     */
+    public Device getDeviceByName(String name) throws SmartSystemException {
         String uid = namesToUID.get(name);
+        
+        if (uid == null) throw new NoSuchDeviceNameException(name);
         
         return getDeviceByUID(uid);
     }
     
-    public void setDevice(String name, Property property) {
-        getDeviceByName(name).set(property);
+    /**
+     * Set a property of a device with specified name
+     * @param name device name
+     * @param property property to set in device
+     * @throws SmartSystemException
+     * 
+     * Exceptions include NoSuchDeviceNameException
+     */
+    public void setDevice(String name, Property property) throws SmartSystemException {
+        Device device = getDeviceByName(name);
+        
+        if (device == null) throw new NoSuchDeviceNameException(name);
+        
+        device.set(property);
         pool.findDevice(namesToUID.get(name)).set(property);
     }
     
-    public DeviceProperties getDeviceProperties(String name) {
-        return getDeviceByName(name).getProperties();
+    /**
+     * Get all the properties of a device given its name
+     * @param name name of device
+     * @return properties of device
+     * @throws SmartSystemException
+     * 
+     * Exceptions include NoSuchDeviceNameException
+     */
+    public DeviceProperties getDeviceProperties(String name) throws SmartSystemException {
+        Device device = getDeviceByName(name);
+        
+        if (device == null) throw new NoSuchDeviceNameException(name);
+        
+        return device.getProperties();
     }
     
 }

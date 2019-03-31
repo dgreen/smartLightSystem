@@ -21,13 +21,21 @@ public class DevicesNGTest {
     Device  device2;
     Devices devices;
 
+    /**
+     * Set up before each test, create 2 devices with 8 digit uid, create devices
+     * @throws Exception
+     */
     @BeforeMethod
     public void setUpMethod() throws Exception {
-        device1 = new Device("100", null);
-        device2 = new Device("101", null);
+        device1 = new Device("12345678", null);
+        device2 = new Device("12345679", null);
         devices = new Devices();
     }
 
+    /**
+     * Tear down after each test, does nothing presently
+     * @throws Exception
+     */
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
@@ -51,8 +59,8 @@ public class DevicesNGTest {
     public void testFindDevice() {
         devices.add(device1);
         devices.add(device2);
-        assertEquals(devices.findDevice("100"), device1);
-        assertEquals(devices.findDevice("101"), device2);
+        assertEquals(devices.findDevice("12345678"), device1);
+        assertEquals(devices.findDevice("12345679"), device2);
     }
 
 }

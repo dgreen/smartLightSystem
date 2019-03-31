@@ -22,10 +22,17 @@ public class HubNGTest {
     private Bulb    b2;
     private Devices pool;
 
+    /**
+     * Set up before a test
+     *   - two bulbs with 8 digit uids
+     *   - add bulbs to pool
+     *   - create hub
+     * @throws Exception
+     */
     @BeforeMethod
     public void setUpMethod() throws Exception {
-        b1   = new Bulb("100", null);
-        b2   = new Bulb("101", null);
+        b1   = new Bulb("12345678", null);
+        b2   = new Bulb("12345679", null);
         pool = new Devices();
         hub  = new Hub(pool, null);
         
@@ -33,6 +40,10 @@ public class HubNGTest {
         pool.add(b2);
     }
 
+    /**
+     * Tear down after test, does nothing presently
+     * @throws Exception
+     */
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
@@ -44,19 +55,19 @@ public class HubNGTest {
     public void testAddDevice() {
         assertEquals(hub.getKnownDevices().size(), 0);
         try {
-            hub.addDevice("100", "Bulb1");
+            hub.addDevice("12345678", "Bulb1");
 
             // should 1 device, with same values but not be same device
             assertEquals(hub.getKnownDevices().size(), 1);
-            assertTrue(b1.equals(hub.getKnownDevices().findDevice("100")));
-            assertTrue(hub.getKnownDevices().findDevice("100") != b1);
+            assertTrue(b1.equals(hub.getKnownDevices().findDevice("12345678")));
+            assertTrue(hub.getKnownDevices().findDevice("12345678") != b1);
 
-            hub.addDevice("101", "Bulb2");
+            hub.addDevice("12345679", "Bulb2");
             assertEquals(hub.getKnownDevices().size(), 2);
-            assertTrue(b2.equals(hub.getKnownDevices().findDevice("101")));
-            assertTrue(hub.getKnownDevices().findDevice("101") != b2);
+            assertTrue(b2.equals(hub.getKnownDevices().findDevice("12345679")));
+            assertTrue(hub.getKnownDevices().findDevice("12345679") != b2);
             try {
-                hub.addDevice("101", "NewName");
+                hub.addDevice("12345679", "NewName");
                 fail("Did not throw Excption for additional add");
             } catch(DeviceAlreadyRegisteredException e) {
                 // this should happend, proceed
@@ -73,11 +84,11 @@ public class HubNGTest {
     @Test
     public void testGetDeviceByUID() {
         try {
-            hub.addDevice("100", "Bulb1");
-            hub.addDevice("101", "Bulb2");
+            hub.addDevice("12345678", "Bulb1");
+            hub.addDevice("12345679", "Bulb2");
 
             assertEquals(hub.getKnownDevices().size(), 2);
-            Device d = hub.getDeviceByUID("101");
+            Device d = hub.getDeviceByUID("12345679");
 
             // should be the copy not original
             assertEquals(d, b2);
@@ -93,8 +104,8 @@ public class HubNGTest {
     @Test
     public void testGetDeviceByName() {
         try {
-            hub.addDevice("100", "Bulb1");
-            hub.addDevice("101", "Bulb2");
+            hub.addDevice("12345678", "Bulb1");
+            hub.addDevice("12345679", "Bulb2");
 
             assertEquals(hub.getKnownDevices().size(), 2);
             Device d = hub.getDeviceByName("Bulb1");
@@ -104,7 +115,7 @@ public class HubNGTest {
             assertTrue(d != b1);
 
             try {
-                hub.addDevice("101", "NewName");
+                hub.addDevice("12345679", "NewName");
                 fail("Did not throw device already registered exception");
             } catch(DeviceAlreadyRegisteredException e) {
                 // should happen
@@ -128,13 +139,13 @@ public class HubNGTest {
     @Test
     public void testSetDevice() {
         try {
-            hub.addDevice("100", "Bulb1");
-            hub.addDevice("101", "Bulb2");
+            hub.addDevice("12345678", "Bulb1");
+            hub.addDevice("12345679", "Bulb2");
 
             hub.setDevice("Bulb1", new Property("Status", "On"));
 
             // check local copy
-            assertEquals(hub.getKnownDevices().findDevice("100").getProperties().getProperty("Status").getValue(),
+            assertEquals(hub.getKnownDevices().findDevice("12345678").getProperties().getProperty("Status").getValue(),
                          "On");
             // check local copy using getDeviceProperties method
             assertEquals(hub.getDeviceProperties("Bulb1").getProperty("Status").getValue(), "On");

@@ -42,7 +42,7 @@ public class Controller {
      * Get the properties for a device by name
      * @param name name of device as registered
      * @return Devices properties for the specified device or null if no such device
-     * @throws dgreen.smartlightsystem.SmartSystemException
+     * @throws dgreen.smartlightsystem.SmartSystemException (or one of subclasses)
      */
     public DeviceProperties getDeviceProperties(String name) throws SmartSystemException {
         return hub.getDeviceProperties(name);
@@ -60,7 +60,7 @@ public class Controller {
      * Add device with uid to system with specified name
      * @param uid device's uid
      * @param name name to use to refer to device
-     * @throws SmartSystemException 
+     * @throws SmartSystemException (or one of subclasses)
      */
     public void addDevice(String uid, String name) throws SmartSystemException {
         hub.addDevice(uid, name);
@@ -71,7 +71,7 @@ public class Controller {
      * Set property p (name and value) of the device referred to as name 
      * @param name device name
      * @param p property with new desired value
-     * @throws SmartSystemException 
+     * @throws SmartSystemException (or one of subclasses)
      */
     public void setDevice(String name, Property p) throws SmartSystemException {
         hub.setDevice(name, p);

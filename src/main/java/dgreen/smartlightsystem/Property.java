@@ -59,12 +59,12 @@ public class Property {
     }
     
     /**
-     * Is the property's value equal to the specified value
-     * @param aValue does this match
+     * Is the property's name equal to the specified name
+     * @param name does this match
      * @return true if a match using equals()
      */
-    public boolean isValue(String aValue) {
-        return aValue.equals(value);
+    public boolean isName(String name) {
+        return name.equals(this.name);
     }
     
 }

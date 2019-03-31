@@ -17,23 +17,23 @@ public class Logger {
      */
     public static final int DEBUG      = 0;
     /**
-     * INFO level of logging (> DEBUG)
+     * INFO level of logging (&gt; DEBUG)
      */
     public static final int INFO       = 10;
     /**
-     * TIMESTAMP Level of logging (>INFO)
+     * TIMESTAMP Level of logging (&gt; INFO)
     */
     public static final int TIMESTAMP  = 20;
     /**
-     * WARNING level of logging (>TIMESTAMP)
+     * WARNING level of logging (&gt;TIMESTAMP)
      */
     public static final int WARNING    = 50;
     /**
-     * ERROR level of logging (> WARNING)
+     * ERROR level of logging (&gt; WARNING)
      */
     public static final int ERROR      = 100;
     /**
-     * ALWAYS level of logging (> everything else)
+     * ALWAYS level of logging (&gt; everything else)
      */
     public static final int ALWAYS     = 100000;
 
@@ -55,7 +55,7 @@ public class Logger {
     }
     
     /**
-     * Log mesaage s through write method if level > internal level 
+     * Log mesaage s through write method if level &gt; internal level 
      * @param level level of message
      * @param s     text of message
      */

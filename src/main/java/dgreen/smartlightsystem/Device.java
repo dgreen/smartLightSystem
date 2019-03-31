@@ -142,7 +142,7 @@ public class Device implements Cloneable {
      * separation between information in the hub and information in a device.  All
      * properties will match.
      * @return copy of device
-     * @throws CloneNotSupportedException 
+     * @throws CloneNotSupportedException should not happen
      */
     @Override
     public Object clone() throws CloneNotSupportedException {

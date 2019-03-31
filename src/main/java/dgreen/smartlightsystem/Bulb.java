@@ -20,7 +20,7 @@ public class Bulb extends Device {
      * Create a Bulb setting properties appropriately
      *
      * @param uid unique ID to be used (caller responsible for uniqueness)
-     * @param logger
+     * @param logger logger to use (or null)
      */
     public Bulb(String uid, Logger logger) {
         super(uid, logger);

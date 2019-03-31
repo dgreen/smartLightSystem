@@ -30,8 +30,8 @@ public class DemoInteractionDiagrams {
         Logger      logger = new PrintLogger();
         logger.setLevel(Logger.DEBUG);
 
-        b1         = new Bulb("100", logger);
-        b2         = new Bulb("101", logger);
+        b1         = new Bulb("12345678", logger);
+        b2         = new Bulb("12345679", logger);
         pool       = new Devices();
         hub        = new Hub(pool, logger);
 
@@ -48,7 +48,7 @@ public class DemoInteractionDiagrams {
         logger.log(Logger.ALWAYS, "Demo Interaction Diagram 1");
         
         try {
-            controller.addDevice("100", "BULB");
+            controller.addDevice("12345678", "BULB");
             DeviceProperties deviceProperties;
             deviceProperties = controller.getDeviceProperties("BULB");
             // print them out
@@ -65,7 +65,7 @@ public class DemoInteractionDiagrams {
         logger.log(Logger.ALWAYS, "Set up precondition for Interaction Diagram 2");
         
         try {
-            controller.addDevice("101", "MoodLight");
+            controller.addDevice("12345679", "MoodLight");
 
             logger.log(Logger.ALWAYS, "Demo Interaction Diagram 2");
 

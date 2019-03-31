@@ -18,19 +18,34 @@ public class BulbNGTest {
     private Bulb b1;
     private Bulb b2;
     
+    /**
+     * Create Test Object
+     */
     public BulbNGTest() {
     }
 
+    /**
+     * Set up before each test
+     *   - Two bulbs with 8 digit uids, no logger
+     * @throws Exception
+     */
     @BeforeMethod
     public void setUpMethod() throws Exception {
-        b1 = new Bulb("100", null);
-        b2 = new Bulb("101", null);
+        b1 = new Bulb("12345678", null);
+        b2 = new Bulb("12345679", null);
     }
 
+    /**
+     * Tear down after test (no actions)
+     * @throws Exception
+     */
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
 
+    /**
+     * Test to see if bulb initialized correctly
+     */
     @Test
     public void testInitialization() {
         assertEquals(b1.get("Status").getValue(),    "Off");
@@ -43,6 +58,9 @@ public class BulbNGTest {
         assertEquals(b2.get("Type").getValue(),      "Bulb");
     }
     
+    /**
+     * Test to see if a property can be changed
+     */
     @Test
     public void testChange() {
         b1.set(new Property("Status", "On"));
@@ -50,6 +68,9 @@ public class BulbNGTest {
         assertEquals(b2.get("Status").getValue(),    "Off");
     }
     
+    /**
+     * Test to see if properties can be locked
+     */
     @Test
     public void testLocked() {
         b1.set(new Property("Unknown", "Wacky"));

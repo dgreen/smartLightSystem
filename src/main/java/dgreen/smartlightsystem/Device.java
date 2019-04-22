@@ -2,6 +2,7 @@
  * File: Device.java
  * Author: David G. Green dgreen@uab.edu
  * Assignment:  smartLightSystem - EE333 Spring 2019
+ * Vers: 1.0.3 04/21/2019 dgg - add lock() to lock properties from expanding
  * Vers: 1.0.2 03/30/2019 dgg - fix order of setting up logger and UID property
  * Vers: 1.0.1 03/28/2019 dgg - convert from long uid to property UID and supplied
  *                              at creation (presently uniqueness is caller's 
@@ -136,6 +137,12 @@ public class Device implements Cloneable {
         return false;
     }
 
+    /**
+     * Lock this device's properties from expanding
+     */
+    public void lock() {
+        properties.lock();
+    }
     
     /**
      * Make a copy of the device making all new parts so to model the 

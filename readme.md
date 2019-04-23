@@ -15,9 +15,7 @@ The discussion that follows supplies *some* input necessary to create the object
 
 Figure 1 shows the conceptual block diagram for the lighting system.
 
-![Figure 1.  Conceptual Block Diagram of light system][blockdiag]
-
-[blockdiag]: ControllerHubLights.svg height=400px
+![Figure 1.  Conceptual Block Diagram of light system](ControllerHubLights.svg)
 
 ## Discussion
 
